@@ -1,26 +1,2 @@
 # Ignore all target folders in any subproject
 **/target/
-
-# Ignore compiled binaries and shared libraries
-**/*.exe
-**/*.dll
-**/*.so
-**/*.dylib
-
-# Ignore IDE/editor settings
-**/.vscode/
-**/.idea/
-
-# Ignore backup/swap/temp files
-**/*~
-**/#*#
-**/.#*
-**/*.log
-**/*.tmp
-**/*.swp
-
-# OS-specific files
-**/.DS_Store
-**/Thumbs.db
-
-**/Cargo.lock
