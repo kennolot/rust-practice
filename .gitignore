@@ -1,2 +1,4 @@
 # Ignore all target folders in any subproject
 **/target/
+
+**/.vscode/
