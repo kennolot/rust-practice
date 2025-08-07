@@ -78,7 +78,7 @@ fn main() {
         Result::Err(msg) => println!("sorry, an error happened: {msg}"),
     }
     // if let
-    sleep_for(-10.0);
+    sleep_for(10.0);
     // while let
     let mut name = String::from("Comprehensive Rust 🦀");
     while let Some(c) = name.pop() {
