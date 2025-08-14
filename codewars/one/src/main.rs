@@ -8,6 +8,7 @@ fn main() {
     println!("count_duplicates= {}", count_duplicates("aabbcde"));
     println!("rot13= {}", rot13("test"));
     println!("make_readable= {}", make_readable(359999));
+    println!("score= {}", score([5, 5, 1, 6, 5]));
 }
 
 fn solution(num: i32) -> i32 {
@@ -92,3 +93,64 @@ fn make_readable(seconds: u32) -> String {
     format!("{:02}:{:02}:{:02}", hours, minutes, secs)
 }
 
+fn get_pins(observed: &str) -> Vec<String> {
+    let mut adj: HashMap<char, Vec<&str>> = HashMap::new();
+
+    adj.insert('0', vec!["0", "8"]);
+    adj.insert('1', vec!["1", "2", "4"]);
+    adj.insert('2', vec!["1", "2", "3", "5"]);
+    adj.insert('3', vec!["2", "3", "6"]);
+    adj.insert('4', vec!["1", "4", "5", "7"]);
+    adj.insert('5', vec!["2", "4", "5", "6", "8"]);
+    adj.insert('6', vec!["3", "5", "6", "9"]);
+    adj.insert('7', vec!["4", "7", "8"]);
+    adj.insert('8', vec!["5", "7", "8", "9", "0"]);
+    adj.insert('9', vec!["6", "8", "9"]);
+
+    let mut possibilities = vec!["".to_string()];
+    for dig in observed.chars() {
+        if let Some(choices) = adj.get(&dig) {
+            possibilities = possibilities.into_iter()
+            .flat_map(|prefix| {
+            choices.iter().map(move |&choice| format!("{}{}", prefix, choice))})
+            .collect();
+        }
+    }
+    possibilities
+}
+
+fn score(dice: [u8; 5]) -> u32 {
+    let mut counts = HashMap::new();
+    let mut points = 0;
+
+    for &die in &dice {
+        *counts.entry(die).or_insert(0) += 1;
+    }        
+    for (&value, &count) in &counts {
+        points += match value {
+            1 => {
+                if count >= 3 {
+                    1000 + (count - 3) as u32 * 100
+                } else {
+                    count as u32 * 100
+                }
+            },
+            5 => {
+                if count >= 3 {
+                    500 + (count - 3) as u32 * 50
+                } else {
+                    count as u32 * 50
+                }
+            },
+            2..=4 | 6 => {
+                if count >= 3 {
+                    value as u32 * 100
+                } else {
+                    0
+                }
+            },
+            _ => 0,
+        }
+    }
+    points
+}
